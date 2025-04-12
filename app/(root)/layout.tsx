@@ -1,16 +1,19 @@
 import React from 'react'
+import Navbar from '../components/Navbar'
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+import "../globals.css";
+
+export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html>
       <body>
-        <div>
-          <h1 className="text-3xl">Root Layout</h1>
+        <Navbar/>
+        <main className="font-work-sans">
+          
           { children }
-        </div>
+        </main>
       </body>
     </html>
+    
   )
 }
-
-export default Layout
