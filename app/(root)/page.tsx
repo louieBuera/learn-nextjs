@@ -3,7 +3,7 @@ export default function Home() {
 
   return (
     <>
-      <h1 className="text-2xl">Welcome to Next.js</h1>
+      <h1 className="heading">Welcome to Next.js</h1>
     </>
   );
 }
