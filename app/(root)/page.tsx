@@ -1,6 +1,7 @@
 import SearchForm from "@/components/SearchForm";
 import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
-import { client } from "@/sanity/lib/client";
+// import { client } from "@/sanity/lib/client";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 
 export default async function Home({ searchParams }: {
@@ -8,8 +9,9 @@ export default async function Home({ searchParams }: {
 }) {
   const query = (await searchParams).query;
 
-  const posts: StartupTypeCard[] = await client.fetch(STARTUPS_QUERY);
-  
+  // const posts: StartupTypeCard[] = await client.fetch(STARTUPS_QUERY);
+  const { data: posts }: { data: StartupTypeCard[] } = await sanityFetch({query: STARTUPS_QUERY})
+
   return (
     <>
       <section className="pink_container">
@@ -30,6 +32,8 @@ export default async function Home({ searchParams }: {
           )) : "No Content"}
         </ul>
       </section>
+
+      <SanityLive />
     </>
   );
 }
