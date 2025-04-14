@@ -1,8 +1,7 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
-import localFont from "next/font/local";
+import Navbar from '@/app/components/Navbar'
 
-import "../globals.css";
+import "@/app/globals.css";
 
 export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
