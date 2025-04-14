@@ -2,6 +2,8 @@ import React from 'react'
 import Ping from './Ping'
 import { client } from '@/sanity/lib/client'
 import { STARTUPS_VIEWS } from '@/sanity/lib/queries'
+import { writeClient } from '@/sanity/lib/write-cient';
+import { after } from 'next/server';
 
 export default async function View({ id }: { id: string }) {
 
@@ -10,6 +12,12 @@ export default async function View({ id }: { id: string }) {
     .fetch(STARTUPS_VIEWS, { id });
 
   // TODO: Update the number of views
+  after(async () => await writeClient
+    .patch(id)
+    .inc({ views: 1})
+    .commit())
+
+  
 
   return <div className="view-container">
     <div className="absolute -top-2 -right-2">
