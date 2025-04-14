@@ -8,9 +8,8 @@ export default async function Home({ searchParams }: {
   searchParams: Promise<{query?: string}>
 }) {
   const query = (await searchParams).query;
-
-  // const posts: StartupTypeCard[] = await client.fetch(STARTUPS_QUERY);
-  const { data: posts }: { data: StartupTypeCard[] } = await sanityFetch({query: STARTUPS_QUERY})
+  const params = { search: query ? `*${query}*` : null }
+  const { data: posts }: { data: StartupTypeCard[] } = await sanityFetch({query: STARTUPS_QUERY, params})
 
   return (
     <>
@@ -27,7 +26,7 @@ export default async function Home({ searchParams }: {
         </p>
 
         <ul className="mt-7 card_grid">
-          { posts.length > 0 ? posts.map((post: StartupTypeCard) => (
+          { posts?.length > 0 ? posts.map((post: StartupTypeCard) => (
             <StartupCard key={post._id} post={post} />
           )) : "No Content"}
         </ul>
