@@ -7,7 +7,7 @@ export const STARTUPS_QUERY = defineQuery(`
   slug,
   _createdAt,
   author -> {
-    _id, name, image, bio
+    _id, name, image, bio, username
   },
   views,
   description,
@@ -23,7 +23,7 @@ export const STARTUPS_FIND = defineQuery(`
   slug,
   _createdAt,
   author -> {
-    _id, name, image, bio
+    _id, name, image, bio, username
   },
   views,
   description,
