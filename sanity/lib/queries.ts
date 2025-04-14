@@ -31,3 +31,8 @@ export const STARTUPS_FIND = defineQuery(`
   image,
   pitch
 }`);
+
+export const STARTUPS_VIEWS = defineQuery(`
+  *[_type == "startup" && _id == $id][0]{
+  _id, views
+}`);
