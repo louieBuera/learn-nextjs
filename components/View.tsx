@@ -3,7 +3,7 @@ import Ping from './Ping'
 import { client } from '@/sanity/lib/client'
 import { STARTUPS_VIEWS } from '@/sanity/lib/queries'
 import { writeClient } from '@/sanity/lib/write-cient';
-import { after } from 'next/server';
+import { unstable_after as after } from 'next/server';
 
 export default async function View({ id }: { id: string }) {
 
