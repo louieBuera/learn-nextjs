@@ -9,34 +9,47 @@ import { Send } from "lucide-react";
 import { z } from "zod";
 import { startupFormSchema } from "@/lib/validation";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { createPitch } from "@/lib/actions";
 
 export default function StartupForm() {
   const [ errors, setErrors ] = useState<Record<string, string>>({});
   const [ pitch, setPitch ] = useState("");
   const  { toast } = useToast();
+  const router = useRouter();
 
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
+    const formValues = {
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
+      category: formData.get("category") as string,
+      link: formData.get("link") as string,
+      pitch,
+    }
     try {
-      const formValues = {
-        title: formData.get("title") as string,
-        description: formData.get("description") as string,
-        category: formData.get("category") as string,
-        link: formData.get("link") as string,
-        pitch,
-      }
+      
 
       await startupFormSchema.parseAsync(formValues);
 
       console.log(formValues)
-      toast({
-        title: "Success",
-        description: "Inputs uploaded successfully!",
-        variant: "destructive"
-      });
-      // const result = await createIdea(prevState, formData, pitch);
+      
+      const result = await createPitch(prevState, formData, pitch);
+      if(result.status == 'SUCCESS'){
+        toast({
+          title: `Success`,
+          description: "Your startup pitch created successfully!",
+          variant: "destructive"
+        });
 
-      // console.log(result);
+        router.push(`/startup/${result._id}`);
+      }
+      return result;
+      // setErrors({});
+      // setPitch('');
+      // return {
+      //   formValues: undefined
+      // }
     } catch (error) {
       if(error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
@@ -49,7 +62,7 @@ export default function StartupForm() {
           variant: "destructive"
         });
 
-        return { ...prevState, error: "Validation Failed", status: "ERROR" }
+        return { ...prevState, formValues, error: "Validation Failed", status: "ERROR" }
       }
       toast({
         title: "Error",
@@ -58,6 +71,7 @@ export default function StartupForm() {
       });
       return {
         ...prevState,
+        formValues,
         error: "An unexpected error has occurred",
         status: "ERROR"
       }
@@ -75,6 +89,7 @@ export default function StartupForm() {
       <div>
         <label htmlFor="title" className='startup-form_label'>Title</label>
         <Input id="title"
+          defaultValue={ state?.formValues?.title }
           name="title"
           className="startup-form_input"
           required
@@ -88,6 +103,7 @@ export default function StartupForm() {
         <label htmlFor="description" className='startup-form_label'>Description</label>
         <Textarea
           id="description"
+          defaultValue={ state?.formValues?.description }
           name="description"
           className="startup-form_textarea"
           required
@@ -100,6 +116,7 @@ export default function StartupForm() {
       <div>
         <label htmlFor="category" className='startup-form_label'>Category</label>
         <Input id="category"
+          defaultValue={ state?.formValues?.category }
           name="category"
           className="startup-form_input"
           required
@@ -112,6 +129,7 @@ export default function StartupForm() {
       <div>
         <label htmlFor="link" className='startup-form_label'>Image URL</label>
         <Input id="link"
+          defaultValue={ state?.formValues?.link }
           name="link"
           className="startup-form_input"
           required
