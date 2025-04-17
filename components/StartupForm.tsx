@@ -45,11 +45,6 @@ export default function StartupForm() {
         router.push(`/startup/${result._id}`);
       }
       return result;
-      // setErrors({});
-      // setPitch('');
-      // return {
-      //   formValues: undefined
-      // }
     } catch (error) {
       if(error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
